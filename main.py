@@ -1,4 +1,6 @@
 import os
+import sys
+import logging
 import yt_dlp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -9,6 +11,10 @@ from kivy.core.window import Window
 from kivy.uix.popup import Popup
 from kivy.uix.anchorlayout import AnchorLayout
 from pathlib import Path
+
+# Set up logging
+logger = logging.getLogger('yt_dlp_logger')
+logging.basicConfig(level=logging.INFO)
 
 downloads_folder = str(Path.home() / "Downloads")
 playlist_folder = os.path.join(downloads_folder, "YouTube Playlist MP3")
@@ -31,6 +37,7 @@ def download_playlist(playlist_url):
         }],
         'prefer_ffmpeg': True,
         'ignoreerrors': True,
+        'logger': logger,  # Use the proper logger
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
